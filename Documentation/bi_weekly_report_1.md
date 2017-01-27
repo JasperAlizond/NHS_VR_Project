@@ -63,3 +63,4 @@ to easily transfer code when working on our project.
 
 Amartya Vadlamani:
 
+I researched 3d rendering methods including marching cubes and relaxed surface nets. I also wrote up a small set of notes concerning the requirements of the project during the meeting with the client. 
