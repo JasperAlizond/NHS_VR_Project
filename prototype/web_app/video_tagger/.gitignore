@@ -1,2 +1,3 @@
 video_tagger/secrets.py
 db.sqlite3
+*/__pycache__/
