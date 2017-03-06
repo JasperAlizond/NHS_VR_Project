@@ -15,9 +15,24 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-import tagger.urls
+from django.http import Http404
+from django.contrib.auth import views as auth_views
+
+from .views import *
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^tagger/', include(tagger.urls.urlpatterns))
+        url(r"^login/", auth_views.login),
+
+        url(r"^project/", project_list),
+        url(r"^project/new/", project_create),
+        url(r"^project/([0-9]+)/", project_detail),
+        url(r"^project/([0-9]+)/delete/", project_delete),
+        url(r"^project/([0-9]+)/export", project_export),
+        
+        url(r"^video/", video_list),
+        url(r"^video/new/", video_create),
+        url(r"^video/([0-9]+)/", video_editor),
+        url(r"^video/([0-9]+)/delete/", video_delete),
+
+
 ]

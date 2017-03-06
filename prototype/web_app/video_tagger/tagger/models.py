@@ -7,7 +7,7 @@ class Project(models.Model):
     
     def __str__(self):
         tag_count = 0
-        for video in self.video_set:
+        for video in self.video_set.all():
             tag_count += video.tag_set.count()
         return "{} [{} Videos, {} Tags]".format(
                 self.title,
@@ -23,6 +23,16 @@ class Video(models.Model):
         return "{} [{} Tags]".format(self.title, self.tag_set.count())
 
 class Tag(models.Model):
+    """
+        Django model that stores tags of type
+            * Text
+            * HTML(Remote)
+            * Images
+            * Video/Audio
+            * PHP Survey
+            * Maps
+    """
+
     video = models.ForeignKey(Video)
     x = models.IntegerField("X Position")
     y = models.IntegerField("Y Position")

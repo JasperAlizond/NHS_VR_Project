@@ -1,0 +1,17 @@
+{% extends "tagger/base.html" %}
+{% block content %}
+    <div class="vertical-center">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+
+        {% for error in errors %}
+            <div class="alert" role="alert">
+              <strong>Error</strong> {{error}}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
