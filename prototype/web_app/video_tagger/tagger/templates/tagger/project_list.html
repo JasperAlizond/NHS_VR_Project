@@ -1,0 +1,23 @@
+{% extends "tagger/base.html" %}
+
+{% block content %}
+    <div class="item-list">
+        <div class="card">
+            <h1> Projects </h1>
+            <a href="/tagger/project/new"><button>Create a new Project</button></a>
+        </div>
+        {% for project in projects %}
+        <div class="card"> 
+            <h3> {{project.title}} </h3>
+            <div class="buttons">
+                <a href="/tagger/project/{{project.id}}"><button>Edit Title</button></a>
+                <a href="/tagger/project/{{project.id}}/video/"><button>Edit Videos</button></a>
+                <form style="display: inline;" method="POST" action="/tagger/project/{{project.id}}/delete/">
+                    {% csrf_token %}
+                    <button class="warn">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

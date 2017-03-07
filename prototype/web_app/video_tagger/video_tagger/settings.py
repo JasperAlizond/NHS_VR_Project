@@ -123,3 +123,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static_base")
         ]
+
+LOGIN_REDIRECT_URL = "/tagger/project/"
+LOGIN_URL = "/tagger/login/"

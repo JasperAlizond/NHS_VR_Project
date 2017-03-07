@@ -1,0 +1,8 @@
+{% extends "tagger/base.html" %}
+
+{% block content %}
+<div>
+    <h1>Currently tagging "{{video.title}}"</h1>
+    <video src="{{video.uploaded_video.url}}">Your browser does not support HTML5, Unfortunately...</video>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "tagger/base.html" %}
+{% block content %}
+<div class="card">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{video_form.as_p}}
+        <button input="submit" name="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

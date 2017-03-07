@@ -21,18 +21,18 @@ from django.contrib.auth import views as auth_views
 from .views import *
 
 urlpatterns = [
-        url(r"^login/", auth_views.login),
+        url(r"^login/", auth_views.login ),
 
-        url(r"^project/", project_list),
-        url(r"^project/new/", project_create),
-        url(r"^project/([0-9]+)/", project_detail),
-        url(r"^project/([0-9]+)/delete/", project_delete),
-        url(r"^project/([0-9]+)/export", project_export),
+        url(r"^project/$", project_list),
+        url(r"^project/new/$", project_create),
+        url(r"^project/([0-9]+)/$", project_detail),
+        url(r"^project/([0-9]+)/delete/$", project_delete),
+        url(r"^project/([0-9]+)/export/$", project_export),
         
-        url(r"^video/", video_list),
-        url(r"^video/new/", video_create),
-        url(r"^video/([0-9]+)/", video_editor),
-        url(r"^video/([0-9]+)/delete/", video_delete),
+        url(r"^project/([0-9]+)/video/$", video_list),
+        url(r"^project/([0-9]+)/video/new/$", video_create),
+        url(r"^project/([0-9]+)/video/([0-9]+)/$", video_editor),
+        url(r"^project/([0-9]+)/video/([0-9]+)/delete/$", video_delete),
 
 
 ]

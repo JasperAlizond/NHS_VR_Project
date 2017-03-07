@@ -1,0 +1,22 @@
+{% extends "tagger/base.html" %}
+
+{% block content %}
+    <div class="item-list">
+        <div class="card">
+            <h1> {{project.title}}'s Videos </h1>
+            <a href="/tagger/project/{{project.id}}/video/new"><button>Create a new Video</button></a>
+        </div>
+        {% for video in videos.all %}
+        <div class="card"> 
+            <h3> {{video.title}} </h3>
+            <div class="buttons">
+                <a href="/tagger/project/{{project.id}}/video/{{video.id}}/"><button>Tag Video</button></a>
+                <form style="display: inline;" method="POST" action="/tagger/project/{{project.id}}/video/{{video.id}}/delete/">
+                    {% csrf_token %}
+                    <button class="warn">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
