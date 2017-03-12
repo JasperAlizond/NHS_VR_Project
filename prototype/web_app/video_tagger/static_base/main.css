@@ -76,3 +76,20 @@ ul.errorlist > li {
     border-radius: 0.5em;
 }
 
+video {
+    max-width: 70%
+}
+
+.tag {
+    z-index: 2;
+    box-sizing: border-box;
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 0.5em;
+    border: 1px solid #ddd;
+    position: absolute;
+}
+
+#tag-container{
+    position: relative;
+}

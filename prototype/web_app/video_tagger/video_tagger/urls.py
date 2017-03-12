@@ -14,10 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from django.contrib.staticfiles.urls import static
 from django.contrib import admin
+from .settings import MEDIA_URL, MEDIA_ROOT
+
 import tagger.urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^tagger/', include(tagger.urls.urlpatterns))
-]
+] + static(MEDIA_URL, document_root=MEDIA_ROOT)

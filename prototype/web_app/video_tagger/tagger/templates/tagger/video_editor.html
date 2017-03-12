@@ -1,8 +1,17 @@
 {% extends "tagger/base.html" %}
 
 {% block content %}
+<h1>Currently tagging "{{video.title}}"</h1>
+
 <div>
-    <h1>Currently tagging "{{video.title}}"</h1>
-    <video src="{{video.uploaded_video.url}}">Your browser does not support HTML5, Unfortunately...</video>
+    <div id="tag-container">
+        <video id="editor-video-view" src="{{video.uploaded_video.url}}" data-tags="{{tags_json}}" controls>
+            Your browser does not support HTML5, Unfortunately...
+        </video>
+    </div>
+    <div class="tagging-controls">
+
+    </div>
 </div>
+
 {% endblock %}

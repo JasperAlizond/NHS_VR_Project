@@ -26,7 +26,7 @@ SECRET_KEY = secrets.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["10.97.29.71", "localhost"]
 
 
 # Application definition
@@ -120,9 +120,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static_base")
         ]
+MEDIA_ROOT = os.path.join(BASE_DIR, 'videos')
 
 LOGIN_REDIRECT_URL = "/tagger/project/"
 LOGIN_URL = "/tagger/login/"

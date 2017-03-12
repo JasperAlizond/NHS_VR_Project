@@ -1,9 +1,12 @@
+import json
+
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from django.contrib.auth.views import login_required
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseNotAllowed, HttpResponseRedirect
 from django.forms import Form, ModelForm, HiddenInput
+from django.core import serializers
 from .models import Project, Video
 
 class ProjectForm(ModelForm):
@@ -93,7 +96,7 @@ def video_editor(request, project_id, video_id):
     vid = get_object_or_404(Video, id=video_id)
     if request.method == "POST":
         pass
-    return render(request, "tagger/video_editor.html", {"video": vid, "tags": vid.tag_set})
+    return render(request, "tagger/video_editor.html", {"video": vid, "tags": vid.tag_set, "tags_json": serializers.serialize("json", vid.tag_set.all())})
 
 @login_required
 def video_delete(request, project_id, video_id):
