@@ -1,16 +1,36 @@
 {% extends "tagger/base.html" %}
-
 {% block content %}
 <h1>Currently tagging "{{video.title}}"</h1>
 
-<div>
-    <div id="tag-container">
-        <video id="editor-video-view" src="{{video.uploaded_video.url}}" data-tags="{{tags_json}}" controls>
-            Your browser does not support HTML5, Unfortunately...
-        </video>
-    </div>
-    <div class="tagging-controls">
+{% csrf_token %}
+<div id="tag-container">
+    <video id="editor-video-view" src="{{video.uploaded_video.url}}" data-tags="{{tags_json}}"  controls>
+        Your browser does not support HTML5, Unfortunately...
+    </video>
+    <div id="tagging-controls">
+        <div id="current-tag" class="card">
+            <h3> Current Tag </h3>
+            <span>
+                <label>X: <input name="x" type=number></input></label>
+                <label>Y: <input name="y" type=number></input></label>
+            </span>
+            <span> 
+                <label>Width: <input name="width" type=number></input></label>
+                <label>Height: <input name="height" type=number></input></label>
+            </span>
 
+            <label>Time Start: <input name="time-start" type=number></input></label>
+            <label>Time End: <input name="time-end" type=number></input></label>
+            <label id="remote-label">Remote URL: <input name="remote-url" type=text></input></label>
+            <label id="local-label">Content: <textarea name="local-content" type=text></textarea></label>
+            <button id="update-tag" class="set-right"> Update Tag </button>
+        </div>
+        <div id="create-new" class="card">
+            <button id="create-text-tag"> Create Text Tag</button>
+            <button id="create-remote-tag"> Create Remote Tag </button>
+            <button id="save-tags"> Save Tags </button>
+        </div>
+        </div>
     </div>
 </div>
 

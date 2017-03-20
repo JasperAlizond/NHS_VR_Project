@@ -77,7 +77,7 @@ ul.errorlist > li {
 }
 
 video {
-    max-width: 70%
+    flex-basis: 60%;
 }
 
 .tag {
@@ -92,4 +92,23 @@ video {
 
 #tag-container{
     position: relative;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+#tagging-controls{
+    flex-basis: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+#current-tag {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    flex-grow: 2;
+}
+#create-new{
+    flex-grow: 1;
 }

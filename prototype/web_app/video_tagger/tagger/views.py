@@ -95,8 +95,10 @@ def video_create(request, project_id):
 def video_editor(request, project_id, video_id):
     vid = get_object_or_404(Video, id=video_id)
     if request.method == "POST":
-        pass
+        for obj in serializers.deserialize("json", request.body):
+            obj.save()
     return render(request, "tagger/video_editor.html", {"video": vid, "tags": vid.tag_set, "tags_json": serializers.serialize("json", vid.tag_set.all())})
+
 
 @login_required
 def video_delete(request, project_id, video_id):
