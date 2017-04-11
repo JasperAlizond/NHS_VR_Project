@@ -45,16 +45,32 @@ function load_tags() {
     var data = editor_video_view.data("tags");
     editor_video_view.html("");
     for (var tag of data){
+        if (tag.deleted === true) continue;
+
         var w_c = video_coords_to_world_coords(tag.fields.x, tag.fields.y, tag.fields.width, tag.fields.height);
+
         if (tag.fields.remote === false){
             $("#tag-container").append(`<div class='tag' id="tag-${tag.pk}" data-tag='${JSON.stringify(tag)}' style="top:${w_c.y}px; left:${w_c.x}px;width:${w_c.w}px;height:${w_c.h}px;">${tag.fields.local_content}</div>`);
         } else{
             $("#tag-container").append(`<div class='tag' id="tag-${tag.pk}" data-tag='${JSON.stringify(tag)}' style="top:${w_c.y}px; left:${w_c.x}px;width:${w_c.w}px;height:${w_c.h}px"><img src="${'https://' + new URL('https://'+tag.fields.remote_url).host + '/favicon.ico'}"></img> This is a remote link to ${tag.fields.remote_url}</div>`);
         }
+
         var tag_elem = $(`#tag-${tag.pk}`);
         tag_elem.on("mouseover", function(e){
             current_tag = $(e.target).data("tag");
             update_tag_form();
+        });
+        tag_elem.mousedown(function(e){
+            if(e.which === 1 && confirm("Are you sure you want to delete this tag?")){
+                var data = editor_video_view.data("tags");
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].pk === $(e.target).data("tag").pk){
+                        data[i].deleted = true;
+                    }
+                }
+                editor_video_view.attr("data-tags", JSON.stringify(data));
+                load_tags();
+            }
         });
     }
 }
@@ -70,10 +86,25 @@ function update_visible(tags) {
 
 function createTag(remote){
     var data = editor_video_view.data("tags");
-    /*data.push(
-{"model": "tagger.tag", "pk": 3, "fields": {"video": 12, "x": 50, "y": 50, "width": 500, "height": 500, "time_start": 50, "time_end": 100, "remote": false, "local_content": "Testing.\r\nBut I think it should be Darth Vader.", "remote_url": ""}}
-    );*/
+    data.push(
+        {"model": "tagger.tag",
+             "pk": Math.floor(Math.random() * 1000000 + 1000),
+             "fields": {
+                "video": editor_video_view.data("video-id"),
+                "x": 50,
+                "y": 50,
+                "width": 500,
+                "height": 500,
+                "time_start": Math.floor(editor_video_view[0].currentTime),
+                "time_end": Math.floor(editor_video_view[0].currentTime + 10),
+                "remote": remote,
+                "local_content": "Insert Text Content Here",
+                "remote_url": "https://www.google.com"
+             }
+        }
+    );
     editor_video_view.attr("data-tags", JSON.stringify(data));
+    load_tags();
 }
 
 $(window).on("load", () => {
@@ -99,8 +130,8 @@ $(window).on("load", () => {
         load_tags();
     });
     
-    $("create-text-tag").click((e)=>createTag(false));
-    $("create-remote-tag").click((e)=>createTag(true));
+    $("#create-text-tag").click((e)=>createTag(false));
+    $("#create-remote-tag").click((e)=>createTag(true));
 
     $("#save-tags").click(function(e){
         var tags = editor_video_view.data("tags");

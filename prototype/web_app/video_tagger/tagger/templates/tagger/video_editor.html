@@ -4,7 +4,7 @@
 
 {% csrf_token %}
 <div id="tag-container">
-    <video id="editor-video-view" src="{{video.uploaded_video.url}}" data-tags="{{tags_json}}"  controls>
+    <video id="editor-video-view" src="{{video.uploaded_video.url}}" data-tags="{{tags_json}}" data-video-id={{video.id}} controls>
         Your browser does not support HTML5, Unfortunately...
     </video>
     <div id="tagging-controls">
