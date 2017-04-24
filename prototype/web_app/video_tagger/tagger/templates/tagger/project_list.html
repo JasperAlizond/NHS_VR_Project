@@ -12,6 +12,7 @@
             <div class="buttons">
                 <a href="/tagger/project/{{project.id}}"><button>Edit Title</button></a>
                 <a href="/tagger/project/{{project.id}}/video/"><button>Edit Videos</button></a>
+                <a href="/tagger/project/{{project.id}}/export/"><button>Export</button></a>
                 <form style="display: inline;" method="POST" action="/tagger/project/{{project.id}}/delete/">
                     {% csrf_token %}
                     <button class="warn">Delete</button>

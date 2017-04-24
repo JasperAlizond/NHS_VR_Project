@@ -4,9 +4,9 @@
     <video id="{{video.id}}" title="{{video.title}}" location="project/{{video.uploaded_video.name}}">
         {% for tag in tag_set.all %}
         {% if tag.remote %}
-        <tag remote="true" x="tag.x" y="tag.y" width="tag.width" height="tag.height" tstart="tag.time_start" tend="tag.time_end" remote_url="{{tag.remote_url}}"/>
+        <tag remote="true" x="{{tag.x}}" y="{{tag.y}}" width="{{tag.width}}" height="{{tag.height}}" tstart="{{tag.time_start}}" tend="{{tag.time_end}}" remote_url="{{tag.remote_url}}"/>
         {% else %}
-        <tag remote="false" x="tag.x" y="tag.y" width="tag.width" height="tag.height" tstart="tag.time_start" tend="tag.time_end" local_content="{{tag.local_content}}"/>
+        <tag remote="false" x="{{tag.x}}" y="{{tag.y}}" width="{{tag.width}}" height="{{tag.height}}" tstart="{{tag.time_start}}" tend="{{tag.time_end}}" local_content="{{tag.local_content}}"/>
         {% endif %}
         {% endfor %} 
     </video>
