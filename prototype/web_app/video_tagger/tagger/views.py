@@ -23,7 +23,7 @@ class ProjectForm(ModelForm):
 class VideoForm(ModelForm):
     class Meta:
         model = Video
-        fields = ["title", "uploaded_video", "project"] 
+        fields = ["title", "uploaded_video", "project"]
         widgets = {"project": HiddenInput()}
 
 @login_required
