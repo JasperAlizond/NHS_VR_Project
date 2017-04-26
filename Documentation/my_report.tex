@@ -1,10 +1,11 @@
 \documentclass[12pt]{report}
-\usepackage[margin=1.25in]{geometry}
+\usepackage[margin=1in]{geometry}
 \usepackage[hidelinks]{hyperref}
 \usepackage{graphicx}
 \usepackage{rotating}
 \usepackage{forest}
 \usepackage{listings}
+\usepackage[toc,page]{appendix}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -165,6 +166,10 @@ would sometimes take upwards of 2 minutes and so reducing this time was crucial.
         take place as nested GameObjects inherit a local coordinate space from
         their parents, meaning that 3D transformations can be stacked together
         with ease.
+
+    \item [Adapter] The Android WebView Plugin written by Amartya adapts
+        Android's native WebView class into one that Unity can use and apply as
+        a texture.
 
 \end{description}
 
@@ -390,6 +395,121 @@ The data was stored in an SQLite3 database. The schema is as follows\ldots
 \includegraphics[height=\textwidth]{er_diagram}
 \clearpage
 
-\section{Project Management}
-\chapter{Compatibility + Response Design Testing}
+\begin{appendices}
+
+    \chapter{Deployment Manual}
+    \section{Deploying the VR Tagging Engine}
+    To begin deploying the app follow these command line instructions
+    \begin{lstlisting}[language=bash, breaklines]
+$ mkdir vr_tagger
+$ cd vr_tagger
+$ virtualenv .
+$ source bin/activate
+$ git clone https://github.com/Napoleon1769/COMP103_AppProject # change the URL as needed
+$ cd COMP103_AppProject/prototype/web_app/
+$ pip install -r requirements.txt
+$ touch video_tagger/video_tagger/secrets.py
+    \end{lstlisting}
+    Now open \url{video_tagger/video_tagger/secrets.py} in your text editor and add this line to the file
+    \begin{lstlisting}[language=python, breaklines]
+SECRET_KEY = r"""^h*y_1+w2s#z(jelq4@^\blg21t*@9*r03)#2*xf7o5x%*v^(g"""
+    \end{lstlisting}
+    {\bf Note:} If you are doing anything remotely security related you should
+    replace the contents of this secret key with a new key from
+    \url{http://www.miniwebtool.com/django-secret-key-generator/}.
+
+    Then you should run these commands 
+
+    \begin{lstlisting}[language=bash, breaklines]
+$ python video_tagger/manage.py migrate
+$ python video_tagger/manage.py runserver 
+    \end{lstlisting}
+    The server should be at http://localhost:8000/tagger/login/
+    
+    {\bf Note:} If you close the shell that is running the server you will have to resource \url{bin/activate} by running \inlinecode{source path/to/activate}.
+
+    \section{Deploying the VR Viewer}
+    Start by installing Unity and the Dependencies that it needs to build
+    applications for the Android Operating System. Then follow the instructions
+    as shown below.
+    \begin{enumerate}
+        \item Extract the Unity Project into a directory
+        \item Launch Unity and open the project that you just extracted with it
+        \item Download the completed project.zip from the VR Tagging Engine
+        \item Extract project.zip
+        \item Copy \url{meta\\meta.xml} into the root Assets directory
+        \item Copy all of the videos into the Streamed Assets directory
+        \item Navigate to the \inlinecode{MainMenu} scene and find the
+            \inlinecode{Canvas Object's Start Up Component's Game Asset}
+            variable. Set this field to the new meta.xml file in the root
+            assets folder.
+        \item Connect your Samsung S7 to your PC and enable both Development Mode and USB Debugging
+        \item Press \inlinecode{Ctrl-B} to build and run the application on the S7
+    \end{enumerate}
+
+    \chapter{System Manual}
+    \section{Working on the VR Engine}
+    The VR Engine it a Django + Python application, meaning that all the best
+    practices are well documented on it's official website
+    \url{https://docs.djangoproject.com/en/1.11/}. All of the python code
+    should comply with the PEP8 coding standard which can be found here
+    \url{https://www.python.org/dev/peps/pep-0008/}. The tagger application is
+    the one that handles the vast majority of URLs that the application can
+    reach.
+
+    \subsection{API Endpoint Map}
+    \begin{description}
+        \item[login/] GET and POST supported. Handles all logins to the system
+        \item[project/] GET only, login required. This view shows a generic
+            list of all projects currently managed by the system. 
+        \item[project/new/] GET and POST supported, login required. This view
+            handles the creation of new projects and any validation associated with this action.
+        \item[project/\$project-id/] GET and POST supported, login required. A
+            view used to rename a project that is already existent
+        \item[project/\$project-id/delete/] POST only, login required. Deletes the project with
+            the given id, all child videos and all grand-child tags
+        \item[project/\$project-id/export/] GET only, login required. Creates a
+            project.zip file for the project with a given ID.
+        \item[project/\$project-id/video/] GET only, login required. This view
+            shows a generic list of all videos owned by a specific project with
+            the given project ID.
+        \item[project/\$project-id/video/new/] GET and POST supported, login
+            required. Creates a new video owned by a specific project with a
+            given project ID. The POST request to this endpoint should be
+            multi-part data with a video attached.
+        \item[project/\$project-id/video/\$video-id/] GET and POST supported,
+            login required. Displays a tag editor on GET. POST data should be a
+            JSON list of all the tags that should belong to this video. Marking
+            with deleted if it needs to be.
+        \item[project/\$project-id/video/\$video-id/delete/] POST only, login
+            required. Deletes the video with the given video id and all child
+            tags associated with it.
+    \end{description}
+
+    \section{Working on the VR Viewer}
+    The purpose of the relevant scripts are as follows.
+    \begin{description}
+        \item[TagScript.cs] Handles the tag object and deletes the tag when
+            the time end for the tag is reached.
+        \item[StartUp.cs] This script runs when the main menu scene is loaded
+            and creates the UI for the user by reading data from the xml
+            document. It also sets the PlayerPrefs needed to access the data
+            from the xml in the video player scene. It also handles user input
+            from the Gear VR to choose a video to play.
+        \item[MoviePlayerSample.cs] This script plays the video selected by
+            the user on a prefab called sphere.
+        \item[CreateTags.cs] This script creates the tags in the video scene
+            and instantiates them in the right position with the relevant
+            content.
+        \item[ApplyWebTexture.cs] This script instantiates a WebView object and
+            uses the functions associated with it to apply a texture to the
+            mesh render of the game object that it is applied.
+        \item[GlobalTexUpdate.cs] This script handles all of the events from
+            all of the ApplyWebTexture scripts in the scene. Forwarding
+            \inlinecode{repaint} and \inlinecode{input} events.
+        \item[WebView.cs] This script is an Adaptor for the Android WebView
+            Class which adapts it's interface into one that Unity can easily
+            use.
+    \end{description}
+\end{appendices}
 \end{document}
